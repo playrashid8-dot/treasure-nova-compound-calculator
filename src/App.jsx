@@ -51,6 +51,9 @@ export default function App() {
     setError(EMPTY_ERROR);
   }
 
+  const cyclePower =
+    result && result.cycles > 1n ? `1.25^${result.cycles.toString()}` : MULTIPLIER_LABEL;
+
   return (
     <div className="page">
       <header className="hero">
@@ -92,7 +95,7 @@ export default function App() {
               <button type="submit" className="primary">
                 CALCULATE
               </button>
-              <button type="button" className="ghost" onClick={onReset}>
+              <button type="button" className="secondary" onClick={onReset}>
                 RESET
               </button>
             </div>
@@ -103,36 +106,68 @@ export default function App() {
           </p>
 
           {result ? (
-            <dl className="result" aria-live="polite">
-              <div>
-                <dt>Number of Accounts</dt>
-                <dd>{result.accounts.toString()}</dd>
+            <div className="outcome" aria-live="polite">
+              <div className="spotlight">
+                <article className="premium final-card">
+                  <p>Final USDT</p>
+                  <strong>{result.finalLabel}</strong>
+                  <span>USDT</span>
+                </article>
+                <article className="premium profit-card">
+                  <p>Total Profit</p>
+                  <strong>+{result.profitLabel}</strong>
+                  <span>USDT</span>
+                </article>
               </div>
-              <div>
-                <dt>Total Initial Deposit</dt>
-                <dd>{result.initialLabel} USDT</dd>
+
+              <dl className="details">
+                <div>
+                  <dt>Number of Accounts</dt>
+                  <dd>{result.accounts.toString()}</dd>
+                </div>
+                <div>
+                  <dt>Total Initial Deposit</dt>
+                  <dd>{result.initialLabel} USDT</dd>
+                </div>
+                <div>
+                  <dt>Days Entered</dt>
+                  <dd>{result.days.toString()}</dd>
+                </div>
+                <div>
+                  <dt>Completed Cycles</dt>
+                  <dd>{result.cycles.toString()}</dd>
+                </div>
+                <div>
+                  <dt>Compound Multiplier</dt>
+                  <dd>{MULTIPLIER_LABEL}×</dd>
+                </div>
+              </dl>
+
+              <div className="summary" aria-label="Calculation summary">
+                <p>
+                  <b>{result.accounts.toString()} Accounts</b>
+                  <i>×</i>
+                  <b>$60 Initial</b>
+                  <i>=</i>
+                  <b>{result.initialLabel} Starting Deposit</b>
+                </p>
+                <p>
+                  <b>{result.days.toString()} Days</b>
+                  <i>=</i>
+                  <b>{result.cycles.toString()} Completed {result.cycles === 1n ? "Cycle" : "Cycles"}</b>
+                </p>
+                <p>
+                  <b>{result.initialLabel}</b>
+                  <i>×</i>
+                  <b>{cyclePower}</b>
+                  <i>=</i>
+                  <b>{result.finalLabel} Final USDT</b>
+                </p>
+                <p className="summary-profit">
+                  Profit: +{result.profitLabel} USDT
+                </p>
               </div>
-              <div>
-                <dt>Days Entered</dt>
-                <dd>{result.days.toString()}</dd>
-              </div>
-              <div>
-                <dt>Completed Cycles</dt>
-                <dd>{result.cycles.toString()}</dd>
-              </div>
-              <div>
-                <dt>Compound Multiplier</dt>
-                <dd>{MULTIPLIER_LABEL}</dd>
-              </div>
-              <div className="final">
-                <dt>Final USDT</dt>
-                <dd>{result.finalLabel} USDT</dd>
-              </div>
-              <div>
-                <dt>Total Profit</dt>
-                <dd>{result.profitLabel} USDT</dd>
-              </div>
-            </dl>
+            </div>
           ) : null}
         </section>
 
