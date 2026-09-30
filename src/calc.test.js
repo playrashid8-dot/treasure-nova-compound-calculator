@@ -7,48 +7,58 @@ import {
   validateInputs,
 } from "./calc.js";
 
-test("multiplier label is the stated 80/60 figure", () => {
-  assert.equal(MULTIPLIER_LABEL, "1.3333333333");
-  assert.equal(computeCompound(1, 30).multiplierLabel, "1.3333333333");
+test("multiplier label is 75/60 = 1.25", () => {
+  assert.equal(MULTIPLIER_LABEL, "1.25");
+  assert.equal(computeCompound(1, 30).multiplierLabel, "1.25");
+});
+
+
+test("10 accounts at 5, 10, and 30 days", () => {
+  const five = computeCompound(10, 5);
+  assert.equal(five.initialLabel, "$600.00");
+  assert.equal(five.finalLabel, "$750.00");
+  assert.equal(five.profitLabel, "$150.00");
+  assert.equal(computeCompound(10, 10).finalLabel, "$937.50");
+  assert.equal(computeCompound(10, 30).finalLabel, "$2,288.82");
 });
 
 test("1 account at 30, 60, and 90 days", () => {
-  assert.equal(computeCompound(1, 30).finalLabel, "$337.12");
-  assert.equal(computeCompound(1, 60).finalLabel, "$1,894.16");
-  assert.equal(computeCompound(1, 90).finalLabel, "$10,642.62");
+  assert.equal(computeCompound(1, 30).finalLabel, "$228.88");
+  assert.equal(computeCompound(1, 60).finalLabel, "$873.11");
+  assert.equal(computeCompound(1, 90).finalLabel, "$3,330.67");
 });
 
 test("2 accounts at 30, 60, and 90 days", () => {
-  assert.equal(computeCompound(2, 30).finalLabel, "$674.24");
-  assert.equal(computeCompound(2, 60).finalLabel, "$3,788.32");
-  assert.equal(computeCompound(2, 90).finalLabel, "$21,285.24");
+  assert.equal(computeCompound(2, 30).finalLabel, "$457.76");
+  assert.equal(computeCompound(2, 60).finalLabel, "$1,746.23");
+  assert.equal(computeCompound(2, 90).finalLabel, "$6,661.34");
 });
 
 test("3 accounts and 45 days", () => {
   const result = computeCompound(3, 45);
   assert.equal(result.initialLabel, "$180.00");
   assert.equal(result.cycles, 9n);
-  assert.equal(result.finalLabel, "$2,397.29");
-  assert.equal(result.profitLabel, "$2,217.29");
+  assert.equal(result.finalLabel, "$1,341.10");
+  assert.equal(result.profitLabel, "$1,161.10");
   assert.equal(result.finalCents - result.initialCents, result.profitCents);
 });
 
 test("50 accounts at 30, 60, and 90 days", () => {
-  assert.equal(computeCompound(50, 30).finalLabel, "$16,855.97");
-  assert.equal(computeCompound(50, 60).finalLabel, "$94,707.88");
-  assert.equal(computeCompound(50, 90).finalLabel, "$532,130.94");
+  assert.equal(computeCompound(50, 30).finalLabel, "$11,444.09");
+  assert.equal(computeCompound(50, 60).finalLabel, "$43,655.75");
+  assert.equal(computeCompound(50, 90).finalLabel, "$166,533.45");
 });
 
 test("100 accounts at 30, 60, and 90 days", () => {
-  assert.equal(computeCompound(100, 30).finalLabel, "$33,711.93");
-  assert.equal(computeCompound(100, 60).finalLabel, "$189,415.75");
-  assert.equal(computeCompound(100, 90).finalLabel, "$1,064,261.89");
+  assert.equal(computeCompound(100, 30).finalLabel, "$22,888.18");
+  assert.equal(computeCompound(100, 60).finalLabel, "$87,311.49");
+  assert.equal(computeCompound(100, 90).finalLabel, "$333,066.91");
 });
 
 test("profit is final minus initial at two decimals", () => {
   const one = computeCompound(1, 30);
   assert.equal(one.initialLabel, "$60.00");
-  assert.equal(one.profitLabel, "$277.12");
+  assert.equal(one.profitLabel, "$168.88");
   assert.equal(one.cycles, 6n);
 
   const zeroDays = computeCompound(3, 0);
@@ -65,15 +75,15 @@ test("projection table is generated for accounts 1 through 100", () => {
     Array.from({ length: 100 }, (_, index) => index + 1),
   );
   assert.equal(rows[0].initialLabel, "$60.00");
-  assert.equal(rows[0].days30, "$337.12");
-  assert.equal(rows[0].days60, "$1,894.16");
-  assert.equal(rows[0].days90, "$10,642.62");
+  assert.equal(rows[0].days30, "$228.88");
+  assert.equal(rows[0].days60, "$873.11");
+  assert.equal(rows[0].days90, "$3,330.67");
   assert.equal(rows[2].days30, computeCompound(3, 30).finalLabel);
-  assert.equal(rows[49].days90, "$532,130.94");
+  assert.equal(rows[49].days90, "$166,533.45");
   assert.equal(rows[99].initialLabel, "$6,000.00");
-  assert.equal(rows[99].days30, "$33,711.93");
-  assert.equal(rows[99].days60, "$189,415.75");
-  assert.equal(rows[99].days90, "$1,064,261.89");
+  assert.equal(rows[99].days30, "$22,888.18");
+  assert.equal(rows[99].days60, "$87,311.49");
+  assert.equal(rows[99].days90, "$333,066.91");
 });
 
 test("validation rejects empty, decimal, and negative input", () => {

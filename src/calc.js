@@ -1,10 +1,10 @@
-/** Stated 80/60 figure. Money math uses 4/3 via BigInt, not this decimal. */
-export const MULTIPLIER_LABEL = "1.3333333333";
+/** 75/60 = 1.25 exactly. Money math uses 5/4 via BigInt. */
+export const MULTIPLIER_LABEL = "1.25";
 
 /**
  * Half-up cents:
- * cents = (accounts * 60 * 4^cycles * 100 + den/2) / den
- * den = 3^cycles
+ * cents = (accounts * 60 * 5^cycles * 100 + den/2) / den
+ * den = 4^cycles
  * cycles = floor(days / 5)
  */
 export function computeCompound(accounts, days) {
@@ -18,8 +18,8 @@ export function computeCompound(accounts, days) {
   }
 
   const cycles = d / 5n;
-  const den = 3n ** cycles;
-  const finalCents = (acc * 60n * 4n ** cycles * 100n + den / 2n) / den;
+  const den = 4n ** cycles;
+  const finalCents = (acc * 60n * 5n ** cycles * 100n + den / 2n) / den;
   const initialCents = acc * 60n * 100n;
   const profitCents = finalCents - initialCents;
 

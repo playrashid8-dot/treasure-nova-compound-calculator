@@ -2,7 +2,7 @@
 
 Single-page calculator for a mathematical compound illustration. It runs entirely in the browser. There is no login, database, or backend.
 
-Initial deposit is accounts × 60. Completed cycles are floor(days / 5). The final amount uses a 4/3 compound per cycle, rounded half-up to cents with integer math. The screen labels the multiplier as 1.3333333333.
+Initial deposit is accounts × 60 USDT. Each completed 5-day cycle compounds at 75/60, which is 1.25×. Completed cycles are floor(days / 5). The final amount is accounts × 60 × 1.25^cycles, rounded half-up to cents with integer math.
 
 Calculation is mathematical only and does not guarantee actual returns.
 
